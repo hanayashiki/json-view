@@ -1,27 +1,57 @@
 import { useState } from "react";
 
-import ReactLogo from "@/assets/react.svg";
-import { id } from "@/utils/types";
+import { QueryClient } from "@tanstack/react-query";
+import { httpBatchLink } from "@trpc/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-function App() {
-  const [count, setCount] = useState(0);
+import { AuthContextProvider, useAuth } from "./utils/auth";
+import Index from "@/json-view-client/src/pages";
+import { config } from "@/json-view-client/src/utils/config";
+import { trpc } from "@/json-view-client/src/utils/trpc";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Index />,
+    children: [],
+  },
+]);
+
+function TrpcApp() {
+  const [queryClient] = useState(() => new QueryClient());
+
+  const { token } = useAuth();
+
+  const [trpcClient] = useState(() =>
+    trpc.createClient({
+      links: [
+        httpBatchLink({
+          url: `${config.serverUrl}/trpc`,
+          // optional
+          headers() {
+            return {
+              authorization: token,
+            };
+          },
+        }),
+      ],
+    })
+  );
 
   return (
-    <div className="h-screen bg-gray-800 text-white flex flex-col justify-center items-center">
-      <div className="p-[3rem] flex gap-x-[2rem]">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="h-[200px]" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <ReactLogo className="h-[200px] w-[200px]" />
-        </a>
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      <div className="h-screen bg-gray-800 text-white">
+        <RouterProvider router={router} />
       </div>
-      <h1 className="text-4xl">json-view</h1>
+    </trpc.Provider>
+  );
+}
 
-      <button className="mt-[1rem]" onClick={() => setCount(count + 1)}>
-        clicked {id(count)} times
-      </button>
-    </div>
+function App() {
+  return (
+    <AuthContextProvider>
+      <TrpcApp />
+    </AuthContextProvider>
   );
 }
 

@@ -1,12 +1,19 @@
 import * as trpc from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
 
-// create context based of incoming request
-// set as optional here so it can also be re-used for `getStaticProps()`
+import { UserService } from "./services/UserService";
+import { createClient } from "@/json-view-server/dbschema/edgeql-js";
+
 export const createContext = async (
   opts?: trpcExpress.CreateExpressContextOptions
 ) => {
+  const edgedb = createClient();
+
+  const userService = new UserService(edgedb);
+
   return {
+    edgedb,
+    userService,
     req: opts?.req,
     res: opts?.res,
   };

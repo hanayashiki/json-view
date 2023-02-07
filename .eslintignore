@@ -4,3 +4,5 @@ tailwind.config.cjs
 tailwind.config.js
 vite.config.ts
 dist/
+
+dbschema/
