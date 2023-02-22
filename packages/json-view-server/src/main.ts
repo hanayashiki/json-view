@@ -17,8 +17,10 @@ app.use(
   })
 );
 
-app.listen(4000, () => {
+const server = app.listen(4000, () => {
   console.info(
     `${packageJson["name"]}@${packageJson["version"]} starting on 4000`
   );
 });
+
+process.on("exit", () => server.closeAllConnections());
