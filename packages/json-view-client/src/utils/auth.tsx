@@ -9,6 +9,7 @@ import React, {
 export interface AuthContextValue {
   clearToken: () => void;
   token: string;
+  generateToken: () => string;
   setToken: (v: string) => void;
 }
 
@@ -21,10 +22,17 @@ export const AuthContextProvider: React.FC<React.PropsWithChildren> = ({
 }) => {
   const [token, setToken] = useState(localStorage.getItem(TOKEN_KEY) || "");
 
+  const generateToken = () => {
+    const array = new Uint8Array(32);
+    window.crypto.getRandomValues(array);
+    return btoa(String.fromCharCode(...array));
+  };
+
   const value: AuthContextValue = useMemo(
     () => ({
       token,
       setToken,
+      generateToken,
       clearToken() {
         setToken("");
       },

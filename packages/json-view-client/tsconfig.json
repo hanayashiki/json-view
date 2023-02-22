@@ -1,4 +1,7 @@
 {
+  "compilerOptions": {
+    "types": ["vite/client", "vitest/importMeta"]
+  },
   "include": ["src", "postcss.config.cjs"],
   "extends": "../../tsconfig.json"
 }
