@@ -40,7 +40,7 @@ export function FileEntries() {
           isOpen={file.id === openFile?.id}
           key={file.id}
           onClick={async () => {
-            store.openFile(file.id);
+            await store.openFile(file.id);
           }}
         />
       ))}
