@@ -8,6 +8,12 @@ export const fileRouter = router({
     .query(async ({ ctx }) => {
       return ctx.fileService.myFiles();
     }),
+  insertFile: baseProcedure
+    .use(authenticateMiddleware())
+    .input(FileModel.InsertDTO)
+    .mutation(async ({ ctx, input }) => {
+      return ctx.fileService.insertFile(input);
+    }),
   updateFile: baseProcedure
     .use(authenticateMiddleware())
     .input(FileModel.UpdateDTO)

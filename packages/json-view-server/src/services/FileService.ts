@@ -10,10 +10,11 @@ export class FileService {
   async myFiles(): Promise<FileModel.ListVO[]> {
     const u = await e
       .select(e.User, () => ({
-        files: () => ({
+        files: (f) => ({
           ...e.File["*"],
           creator: e.User["*"],
           "@open_at": true,
+          order_by: f["created_at"],
         }),
         filter_single: {
           id: this.userService.user?.id!,
@@ -22,6 +23,30 @@ export class FileService {
       .run(this.edgedb);
 
     return u?.files ?? [];
+  }
+
+  async insertFile(dto: FileModel.InsertDTO): Promise<FileModel.VO> {
+    const { id } = await e
+      .insert(e.File, {
+        content: "",
+        creator: e.select(e.User, () => ({
+          filter_single: {
+            id: e.uuid(this.userService.user?.id!),
+          },
+        })),
+        filename: dto.filename,
+      })
+      .run(this.edgedb);
+
+    return (await e
+      .select(e.File, () => ({
+        ...e.File["*"],
+        creator: e.User["*"],
+        filter_single: {
+          id,
+        },
+      }))
+      .run(this.edgedb))!;
   }
 
   async updateFile(dto: FileModel.UpdateDTO) {
@@ -38,6 +63,7 @@ export class FileService {
         set: {
           filename: dto.filename,
           content: dto.content,
+          updated_at: new Date(),
         },
       }))
       .run(this.edgedb);

@@ -16,7 +16,9 @@ export const TreeView = () => {
         try {
           return parseLooseJson(openFile.content);
         } finally {
-          console.info(`parseLooseJson used ${performance.now() - t0}ms`);
+          console.info(
+            `TreeView: parseLooseJson used ${performance.now() - t0}ms`
+          );
         }
       }
     } catch (e) {

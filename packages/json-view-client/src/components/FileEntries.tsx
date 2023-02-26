@@ -1,4 +1,5 @@
 import { cx } from "classix";
+import { VscAdd } from "react-icons/vsc";
 
 import { useStore } from "../utils/store";
 import { FileModel } from "@/json-view-server/src/models/FileModel";
@@ -34,6 +35,13 @@ export function FileEntries() {
 
   return (
     <div className="flex">
+      <button
+        className="h-[24px] w-[24px] flex justify-center items-center"
+        onClick={() => store.insertFile()}
+      >
+        <VscAdd className="h-[14px] w-[14px]" />
+      </button>
+
       {files.map((file) => (
         <FileEntry
           file={file}

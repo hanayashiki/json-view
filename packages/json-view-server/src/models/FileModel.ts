@@ -14,11 +14,11 @@ export namespace FileModel {
 
   export type DO = z.TypeOf<typeof DO>;
 
-  export const CreateDTO = DO.pick({
+  export const InsertDTO = DO.pick({
     filename: true,
   });
 
-  export type CreateDTO = z.TypeOf<typeof CreateDTO>;
+  export type InsertDTO = z.TypeOf<typeof InsertDTO>;
 
   export const UpdateDTO = DO.pick({
     filename: true,
@@ -35,4 +35,10 @@ export namespace FileModel {
   });
 
   export type ListVO = z.TypeOf<typeof ListVO>;
+
+  export const VO = ListVO.omit({
+    "@open_at": true,
+  });
+
+  export type VO = z.TypeOf<typeof VO>;
 }
