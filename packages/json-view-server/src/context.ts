@@ -8,7 +8,14 @@ import { createClient } from "@/json-view-server/dbschema/edgeql-js";
 export const createContext = async (
   opts?: trpcExpress.CreateExpressContextOptions
 ) => {
-  const edgedb = createClient();
+  const edgedb = createClient(
+    process.env.DSN
+      ? {
+          dsn: process.env.DSN,
+          tlsSecurity: "insecure",
+        }
+      : undefined
+  );
 
   const userService = new UserService(edgedb);
 

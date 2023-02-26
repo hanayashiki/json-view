@@ -10,6 +10,7 @@ export interface AuthContextValue {
   clearToken: () => void;
   token: string;
   generateToken: () => string;
+  getToken: () => string | null;
   setToken: (v: string) => void;
 }
 
@@ -33,6 +34,9 @@ export const AuthContextProvider: React.FC<React.PropsWithChildren> = ({
       token,
       setToken,
       generateToken,
+      getToken() {
+        return localStorage.getItem(TOKEN_KEY);
+      },
       clearToken() {
         setToken("");
       },

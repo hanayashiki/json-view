@@ -37,7 +37,7 @@ function TrpcApp() {
       })
   );
 
-  const { token } = useAuth();
+  const { getToken } = useAuth();
 
   const trpcClient = useMemo(
     () =>
@@ -49,13 +49,13 @@ function TrpcApp() {
             // optional
             headers() {
               return {
-                authorization: token ? `Token ${token}` : undefined,
+                authorization: getToken() ? `Token ${getToken()}` : undefined,
               };
             },
           }),
         ],
       }),
-    [token]
+    []
   );
 
   return (

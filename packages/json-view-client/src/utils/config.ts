@@ -7,7 +7,7 @@ export const developmentConfig: Config = {
 };
 
 export const productionConfig: Config = {
-  serverUrl: "https://json-view.chenyu.pw",
+  serverUrl: "", // Should be hosted under the same host
 };
 
 export const config =

@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "check": "tsc",
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "build": "vite build"
   },
   "dependencies": {
     "@babel/parser": "^7.21.2",
