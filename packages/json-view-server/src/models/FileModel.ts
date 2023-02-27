@@ -16,6 +16,7 @@ export namespace FileModel {
 
   export const InsertDTO = DO.pick({
     filename: true,
+    content: true,
   });
 
   export type InsertDTO = z.TypeOf<typeof InsertDTO>;

@@ -47,9 +47,10 @@ export class Store {
     });
   }
 
-  async insertFile() {
+  async insertFile(content: string = "") {
     const newFile = await this.utils.client.insertFile.mutate({
       filename: this.getNextFileName(),
+      content,
     });
 
     this.utils.myFiles.setData(undefined, (files) => [

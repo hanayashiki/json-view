@@ -28,7 +28,7 @@ export class FileService {
   async insertFile(dto: FileModel.InsertDTO): Promise<FileModel.VO> {
     const { id } = await e
       .insert(e.File, {
-        content: "",
+        content: dto.content,
         creator: e.select(e.User, () => ({
           filter_single: {
             id: e.uuid(this.userService.user?.id!),
