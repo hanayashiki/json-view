@@ -38,6 +38,23 @@ export class FileService {
       })
       .run(this.edgedb);
 
+    await e
+      .update(e.User, () => ({
+        filter_single: {
+          id: this.userService.user?.id!,
+        },
+        set: {
+          files: {
+            "+=": e.select(e.File, () => ({
+              filter_single: {
+                id,
+              },
+            })),
+          },
+        },
+      }))
+      .run(this.edgedb);
+
     return (await e
       .select(e.File, () => ({
         ...e.File["*"],
